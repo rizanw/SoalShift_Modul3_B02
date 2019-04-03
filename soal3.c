@@ -61,9 +61,11 @@ int main(){
 void *checker(void *argv){
     while(1){
         if(WakeUp_Status >= 100){
+            printf("Agmal Terbangun,mereka bangun pagi dan berolahraga\n");
             exit(0);
         }
         if(Spirit_Status <= 0){
+            printf("Iraj ikut tidur, dan bangun kesiangan bersama Agmal\n");
             exit(0);
         }
     }
