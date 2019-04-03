@@ -15,10 +15,13 @@ int WakeUp_Status = 0;
 int Spirit_Status = 100;
 int i_stat = 0;
 int a_stat = 0;
+int i_ptr = 0;
+int a_ptr = 0;
 
 void *thread(void *argv);
 void *agmal(void *argv);
 void *iraj(void *argv);
+void *checker(void *argv);
 
 int main(){
     int num_t = 2, i;
@@ -27,39 +30,58 @@ int main(){
     char *s2 = "Agmal Ayo Bangun";
     char *s3 = "Iraj Ayo Tidur";
     
-    pthread_t tid_a, tid_i;
+    pthread_t tid_a, tid_i, tid_s;
     pthread_create(&tid_a, NULL, agmal, NULL);
     pthread_create(&tid_i, NULL, iraj, NULL);
-    
+    pthread_create(&tid_s, NULL, checker, NULL);
+
     while(1){
         gets(cmd);
         if(strcasecmp(cmd, s1) == 0){
             printf("Agmal WakeUp_Status\t= %d\n", WakeUp_Status);
             printf("Iraj Spirit_Status\t= %d\n", Spirit_Status);
         }else if(strcasecmp(cmd, s2) == 0){
-            printf("agmal\n");
+            // printf("agmal\n");
+            if(a_stat != 3)
+                a_ptr = 1;
         }else if(strcasecmp(cmd, s3) == 0){
-            iraj();
+            // printf("iraj\n");
+            if(i_stat != 3)
+                i_ptr = 1;
         }else{
             printf("no cmd\n");
         }
     }
-    
 
-//    for (i=0; i<num_t; i++) {
-//        pthread_join(tid[i], NULL);
-//    }
+    pthread_join(tid_a, NULL);
+    pthread_join(tid_i, NULL);
+    pthread_join(tid_s, NULL);
+}
+
+void *checker(void *argv){
+    while(1){
+        if(WakeUp_Status >= 100){
+            exit(0);
+        }
+        if(Spirit_Status <= 0){
+            exit(0);
+        }
+    }
 }
 
 void *agmal(void *argv){
     while (1) {
-        if(a_stat == 3){
-            sleep(5);
-            printf("\tagmal sleep selesai\n");
-        }else{
-            Spirit_Status+=20;
-            i_stat++;
+        if(a_stat == 3){            
             printf("Agmal Ayo Bangun disabled 10 s\n");
+            sleep(10);
+            // printf("\tagmal sleep selesai\n");
+            a_stat = 0;
+        }else if(a_ptr == 1 && a_stat != 3){
+            a_ptr = 0;
+            WakeUp_Status += 15;
+            i_stat++;
+            // printf("Agmal WakeUp_Status\t= %d\n", WakeUp_Status);
+            // printf("Iraj Spirit_Status\t= %d\n", Spirit_Status);
         }
     }
     
@@ -68,12 +90,16 @@ void *agmal(void *argv){
 void *iraj(void *argv){
     while (1) {
         if(i_stat == 3){
-            sleep(5);
-            printf("\tiraj sleep selesai\n");
-        }else{
-            Spirit_Status+=20;
-            a_stat++;
             printf("Fitur Iraj Ayo Tidur disabled 10 s\n");
+            sleep(10);
+            // printf("\tiraj sleep selesai\n");
+            i_stat = 0;
+        }else if(i_ptr == 1 && i_stat != 3){
+            i_ptr = 0;
+            Spirit_Status -= 20;
+            a_stat++;
+            // printf("Agmal WakeUp_Status\t= %d\n", WakeUp_Status);
+            // printf("Iraj Spirit_Status\t= %d\n", Spirit_Status);
         }
     }
     
