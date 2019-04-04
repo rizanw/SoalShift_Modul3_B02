@@ -23,3 +23,33 @@ void *factorial(void *args) {
 	printf("Factorial of Given Number is = %d\n",fac);
 }
 ```
+3. Menghitung banyaknya argumen yang di inputkan dengan menggunakan `argc`. Jika lebih dari sama dengan 2, maka di print kan inputan argumennya. Mengapa lebih dari sama dengan 2 karena nama file dihitung 1
+```sh
+if( argc >= 2 )
+    {
+        printf("The arguments supplied are:\n");
+        for(i = 1; i < argc; i++)
+        {
+            printf("%s\t", argv[i]);
+        }
+    }
+    else
+    {
+        printf("argument list is empty.\n");
+    }
+```
+4. Karena yang diminta sorting 
+```sh
+for(k = 1; k < argc; k++) {
+	for(j = k + 1; j < argc; j++) {
+		int angka1 = argv[k][0] - '0';
+		int angka2 = argv[j][0] - '0';
+		if(angka2 < angka1){
+			char *temp = argv[j];
+			argv[j] = argv[k];
+			argv[k] = temp;
+		}
+	}
+```
+
+	
