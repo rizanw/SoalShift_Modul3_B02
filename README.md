@@ -8,7 +8,7 @@ Buatlah program C yang bisa menghitung faktorial secara parallel lalu menampilka
 ##### 4!=24
 ##### 5!=120
 ### Jawaban:
-> Check : [Full SourceCode]
+> Check : [Full SourceCode](https://github.com/sherlyrosa/SoalShift_Modul3_B02/blob/master/Soal%20No%201/no1.c)
 ### Penjelasan :
 1. Karena input-an pada file yang diminta ialah dalam bentuk argumen maka menggunakan `argc` dan `argv`.
 2. Untuk menghitung `factorial` nya 
@@ -72,7 +72,7 @@ g. Server penjual akan mencetak stok saat ini setiap 5 detik sekali
 
 h. Menggunakan thread, socket, shared memory
 ### Jawaban :
-> Check : [Full SourceCode]
+> Check : [Full SourceCode](https://github.com/sherlyrosa/SoalShift_Modul3_B02/tree/master/Soal%20No%202)
 ### Penjelasan :
 #### Client Pembeli
 1. Membuat deskriptor file socket
@@ -231,5 +231,5 @@ b. Kedua karakter memiliki status yang unik
 
 #### Syarat Menggunakan Lebih dari 1 Thread
 ### Jawaban:
-> Check : [Full SourceCode]
+> Check : [Full SourceCode](https://github.com/sherlyrosa/SoalShift_Modul3_B02/blob/master/Soal%20No%203/no3.c)
 ### Penjelasan :
