@@ -4,6 +4,7 @@
 #include <termios.h>
 #include <pthread.h>
 
+
 char petname[77];
 int hunger_stat = 200;
 //sekaligus nilai maks, berkurang 5 tiap 10detik, jika 0 = gameover
@@ -26,12 +27,13 @@ void *Bathing(void *argv);
 void *Regenerating(void *argv);
 void *menu0(void *argv);
 void *menu1(void *argv);
+void *menu2(void *argv);
 
 int main(int argc, char const *argv[]) {
   printf("Kasih Nama: ");
   scanf("%s", petname);
 
-  pthread_t tid1, tid2, tid3, tid4, tid5, tid6;
+  pthread_t tid1, tid2, tid3, tid4, tid5, tid6, tid7;
 
   pthread_create(&tid1, NULL, Hunger, NULL);
   pthread_create(&tid2, NULL, Hygiene, NULL);
@@ -39,6 +41,7 @@ int main(int argc, char const *argv[]) {
   pthread_create(&tid4, NULL, Regenerating, NULL);
   pthread_create(&tid5, NULL, menu0, NULL);
   pthread_create(&tid6, NULL, menu1, NULL);
+  pthread_create(&tid7, NULL, menu2, NULL);
 
   while (1) {
     if(pet_stat == 0){
@@ -77,14 +80,17 @@ int main(int argc, char const *argv[]) {
   }
 
   pthread_join(tid1, NULL);
-//  pthread_join(tid2, NULL);
-//  pthread_join(tid3, NULL);
+  pthread_join(tid2, NULL);
+  pthread_join(tid3, NULL);
+  pthread_join(tid4, NULL);
+  pthread_join(tid5, NULL);
+  pthread_join(tid6, NULL);
 
   return 0;
 }
 
 void *Hunger(void *argv){
-  while (1) {
+  while (pet_stat != 1) {
     if(hunger_stat > 200) hunger_stat = 200;
 
     sleep(10);
@@ -98,7 +104,7 @@ void *Hunger(void *argv){
 }
 
 void *Hygiene(void *argv){
-  while (1) {
+  while (pet_stat != 1) {
     sleep(10);
     hygiene_stat-=10;
 
@@ -144,11 +150,19 @@ char getch() {
 void *menu0(void *argv) {
   char in;
   while (1) {
-    in = getch();
     if(pet_stat == 0){
+      in = getch();
       if(in == '1'){
         //Mode makan
-        printf("1\n");
+        if(food_strg != 0){
+          food_strg-=1;
+          printf("%s is eating\n", petname);
+          hunger_stat-= 15;
+          sleep(1);
+        }else{
+          printf("food needed. restock please\n");
+          sleep(1);
+        }
       }else if(in == '2'){
         //Mode mandi
         printf("mandi dulu\n");
@@ -159,7 +173,7 @@ void *menu0(void *argv) {
         pet_stat = 1;
       }else if(in == '4'){
         //Mode pasar
-        printf("4\n");
+        pet_stat = 2;
       }else if(in == '5'){
         //keluar game
         printf("exit . . .\n");
@@ -173,8 +187,8 @@ void *menu1(void *argv){
   //menu tarung
   char in;
   while (1) {
-    in = getch();
     if(pet_stat == 1){
+      in = getch();
       if(in == '1'){
         printf("%s is attacking\n", petname);
         sleep(1);
@@ -182,6 +196,11 @@ void *menu1(void *argv){
         printf("Enemy is attacking\n");
         sleep(1);
         health_stat -= 20;
+        if(health_enemy == 0){
+          printf("%s wins\n", petname);
+          sleep(2);
+          pet_stat = 0;
+        }
       }else if(in == '2'){
         //Mode kabur
         printf("%s is running\n", petname);
@@ -192,8 +211,24 @@ void *menu1(void *argv){
   }
 }
 
-void *Regenerating(void *argv) {
+void *menu2(void *argv){
+  //menu pasar
+  char in;
   while (1) {
+    if(pet_stat == 2){
+      in = getch();
+      if(in == '1'){
+        //buy
+      }else if(in == '2'){
+        //back
+        pet_stat = 0;
+      }
+    }
+  }
+}
+
+void *Regenerating(void *argv) {
+  while (pet_stat != 1) {
     if(pet_stat == 0 && health_stat < 30){
       health_stat+=5;
       sleep(10);
