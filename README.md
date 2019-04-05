@@ -77,34 +77,35 @@ h. Menggunakan thread, socket, shared memory
 #### Client Pembeli
 1. Membuat deskriptor file socket
 
-``sh
+```sh
 if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        printf("\n Socket creation error \n");
+	printf("\n Socket creation error \n");
         return -1;
     }
- ``
+    
+ ```
  
  2. Tetapkan alamat IP di `servaddr` ke `127.0.0.1` karena server juga berada di mesin yang sama. Alamat dalam `servaddr` harus dalam format integer, karenanya menggunakan fungsi `inet_pton`
 
-``sh
+```sh
  if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) {
         printf("\nInvalid address/ Address not supported \n");
         return -1;
     }
-``
+```
 
 3. Hubungkan ke perangkat yang `address` dan nomor `port`nya ditentukan di `servaddr`.
 
-``sh
+```sh
 if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         printf("\nConnection Failed \n");
         return -1;
     }
-``
+```
 
 4. Client pembeli melakukan apa yang diperintahkan
 
-``sh
+```sh
 while(1) {
         char perintah[10];
         scanf("%s", perintah);
@@ -113,25 +114,25 @@ while(1) {
         printf("%s\n", temp);
         memset(temp, 0, sizeof(temp));
     }
-``
+```
 
 #### Client Penjual
 1. Untuk proses socketnya sama dengan `Client Pembeli`
 
 2. Client penjual melakukan apa yang diperintahkan
 
-``sh
+```sh
 while(1) {
         char perintah[10];
         scanf("%s", perintah);
         send(sock, perintah, strlen(perintah), 0);
     }
-``
+```
 #### Server Pembeli
 
 1. Memaksa melampirkan socket ke `port`
 
-``sh
+```sh
   if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
         perror("setsockopt");
         exit(EXIT_FAILURE);
@@ -146,11 +147,11 @@ while(1) {
         perror("listen");
         exit(EXIT_FAILURE);
     }
-``
+```
 
 2. Melaksanakan yang diperintahkan, `sizeof()` untuk mengembalikan jumlah memori.
 
-``sh
+```sh
  while((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen))>0) {
         memset(buffer, 0, sizeof(buffer));
         while(valread = read( new_socket , buffer, 1024) > 0) {
@@ -165,14 +166,14 @@ while(1) {
             memset(buffer, 0, sizeof(buffer));
         }
     }
- ``
+ ```
  
 #### Server Penjual
 1. Socket memiliki perintah yang sama dengan server pembeli
 
 2. Melaksanakan yang diperintahkan, `sizeof()` untuk mengembalikan jumlah memori.
 
-``sh
+```sh
     while ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen))>0) {
         memset(buffer, 0, sizeof(buffer));
         while(valread = read( new_socket , buffer, 1024) > 0) {
@@ -182,14 +183,14 @@ while(1) {
             memset(buffer, 0, sizeof(buffer));
         }
     }
-``
+```
 
 3. Untuk mengeluarkan jumlah stok yang tersedia di penjual
 
-``sh
+```sh
 void *print_value(void *ptr) {
     while(1) {
         printf("Stok saat ini : %d\n", *value);
         sleep(5);
     }
-``
+```
