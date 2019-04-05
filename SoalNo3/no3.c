@@ -18,13 +18,11 @@ int a_stat = 0;
 int i_ptr = 0;
 int a_ptr = 0;
 
-void *thread(void *argv);
 void *agmal(void *argv);
 void *iraj(void *argv);
 void *checker(void *argv);
 
 int main(){
-    int num_t = 2, i;
     char *cmd = malloc(100);
     char *s1 = "All Status";
     char *s2 = "Agmal Ayo Bangun";
@@ -41,15 +39,13 @@ int main(){
             printf("Agmal WakeUp_Status\t= %d\n", WakeUp_Status);
             printf("Iraj Spirit_Status\t= %d\n", Spirit_Status);
         }else if(strcasecmp(cmd, s2) == 0){
-            // printf("agmal\n");
+            // printf("agmal ayo bangun\n");
             if(a_stat != 3)
                 a_ptr = 1;
         }else if(strcasecmp(cmd, s3) == 0){
-            // printf("iraj\n");
+            // printf("iraj ayo tidur\n");
             if(i_stat != 3)
                 i_ptr = 1;
-        }else{
-            printf("no cmd\n");
         }
     }
 
@@ -104,5 +100,4 @@ void *iraj(void *argv){
             // printf("Iraj Spirit_Status\t= %d\n", Spirit_Status);
         }
     }
-    
 }
