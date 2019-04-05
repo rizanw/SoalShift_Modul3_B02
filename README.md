@@ -76,27 +76,34 @@ h. Menggunakan thread, socket, shared memory
 ### Penjelasan :
 #### Client Pembeli
 1. Membuat deskriptor file socket
+
 ``sh
 if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         printf("\n Socket creation error \n");
         return -1;
     }
  ``
+ 
  2. Tetapkan alamat IP di `servaddr` ke `127.0.0.1` karena server juga berada di mesin yang sama. Alamat dalam `servaddr` harus dalam format integer, karenanya menggunakan fungsi `inet_pton`
+
 ``sh
  if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) {
         printf("\nInvalid address/ Address not supported \n");
         return -1;
     }
 ``
+
 3. Hubungkan ke perangkat yang `address` dan nomor `port`nya ditentukan di `servaddr`.
+
 ``sh
 if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         printf("\nConnection Failed \n");
         return -1;
     }
 ``
+
 4. Client pembeli melakukan apa yang diperintahkan
+
 ``sh
 while(1) {
         char perintah[10];
@@ -107,9 +114,12 @@ while(1) {
         memset(temp, 0, sizeof(temp));
     }
 ``
+
 #### Client Penjual
 1. Untuk proses socketnya sama dengan `Client Pembeli`
+
 2. Client penjual melakukan apa yang diperintahkan
+
 ``sh
 while(1) {
         char perintah[10];
@@ -118,7 +128,9 @@ while(1) {
     }
 ``
 #### Server Pembeli
+
 1. Memaksa melampirkan socket ke `port`
+
 ``sh
   if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
         perror("setsockopt");
@@ -135,7 +147,9 @@ while(1) {
         exit(EXIT_FAILURE);
     }
 ``
+
 2. Melaksanakan yang diperintahkan, `sizeof()` untuk mengembalikan jumlah memori.
+
 ``sh
  while((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen))>0) {
         memset(buffer, 0, sizeof(buffer));
@@ -152,9 +166,12 @@ while(1) {
         }
     }
  ``
+ 
 #### Server Penjual
 1. Socket memiliki perintah yang sama dengan server pembeli
+
 2. Melaksanakan yang diperintahkan, `sizeof()` untuk mengembalikan jumlah memori.
+
 ``sh
     while ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen))>0) {
         memset(buffer, 0, sizeof(buffer));
@@ -166,7 +183,9 @@ while(1) {
         }
     }
 ``
+
 3. Untuk mengeluarkan jumlah stok yang tersedia di penjual
+
 ``sh
 void *print_value(void *ptr) {
     while(1) {
