@@ -364,3 +364,91 @@ void *checker(void *argv){
     }
 }
 ```
+## 4 Soal 4
+Buatlah sebuah program C dimana dapat menyimpan list proses yang sedang berjalan (ps -aux) maksimal 10 list proses. Dimana awalnya list proses disimpan dalam di 2 file ekstensi .txt yaitu SimpanProses1.txt di direktori /home/Document/FolderProses1 dan SimpanProses2.txt di direktori /home/Document/FolderProses2 , setelah itu masing2 file di kompres zip dengan format nama file KompresProses1.zip dan KompresProses2.zip dan file SimpanProses1.txt dan SimpanProses2.txt akan otomatis terhapus, setelah itu program akan menunggu selama 15 detik lalu program akan mengekstrak kembali file KompresProses1.zip dan KompresProses2.zip  
+####Dengan Syarat :
+- Setiap list proses yang di simpan dalam masing-masing file .txt harus berjalan bersama-sama
+- Ketika mengkompres masing-masing file .txt harus berjalan bersama-sama
+- Ketika Mengekstrak file .zip juga harus secara bersama-sama
+- Ketika Telah Selesai melakukan kompress file .zip masing-masing file, maka program akan memberi pesan “Menunggu 15 detik untuk mengekstrak kembali”
+- Wajib Menggunakan Multithreading
+- Boleh menggunakan system
+### Jawaban:
+> Check : [Full SourceCode](https://github.com/sherlyrosa/SoalShift_Modul3_B02/blob/master/SoalNo3/no3.c)
+### Penjelasan :
+1. Buat tiga fungsi utama yaitu :
+```c
+void bikinFile();
+void kompresFile();
+void ekstrakFile();
+```
+2. Fungsi `bikinFile()` akan membuat file dari `ps -aux` ke sebuah teks file.
+```c
+void bikinFile(int x){
+    char filename[50];
+    char dir[30];
+    sprintf(dir, "~/Documents/FolderProses%d", x);
+    char cmd1[50];
+    sprintf(cmd1,"mkdir -p %s", dir);
+    system(cmd1);
+    sprintf(filename, "%s/SimpanProses%d.txt", dir, x);
+    char cmd2[70];
+    sprintf(cmd2, "ps -aux | head -10 > %s", filename);
+    system(cmd2);
+}
+```
+3. Fungsi `kompresFile()` akan mengkompres file teks ke zip file.
+```c
+void kompresFile(int x){
+    char dir[30];
+    sprintf(dir, "~/Documents/FolderProses%d", x);
+    char filename[50];
+    sprintf(filename, "%s/SimpanProses%d.txt", dir, x);
+    char cmd[120];
+    sprintf(cmd, "zip -r %s/KompresProses%d.zip %s",dir, x, filename);
+    system(cmd);
+    char del[80];
+    sprintf(del, "rm %s", filename);
+    system(del);
+}
+```
+4. Fungsi `ekstrakFile()` akan mengekstrak kembali filenya.
+```c
+void ekstrakFile(int x){
+    char dir[30];
+    sprintf(dir, "~/Documents/FolderProses%d", x);
+    char filename[50];
+    sprintf(filename, "%s/SimpanProses%d.txt", dir, x);
+    char cmd[180];
+    sprintf(cmd, "unzip -j %s/KompresProses%d.zip -d %s", dir, x, dir);
+    system(cmd);
+}
+```
+5. untuk menjalankannya secara pararel maka buat sebuah fungsi thread yang dinamik. Dalam kasus ini kita dapat memanfaatkan array.
+```c
+    int num_t = 2, i;
+    pthread_t tid[num_t];
+    
+    for (i=0; i<num_t; i++) {
+        pthread_create(&tid[i], NULL, thread, &i);
+    }
+    for (i=0; i<num_t; i++) {
+        pthread_join(tid[i], NULL);
+    }
+```
+6. Lengkapi fungsi `thread()` yang dibuat degan fungsi-fungsi yang telah dibuat sebelumnya.
+```c
+void *thread(void *argv){
+    int *ptr = (int *) argv;
+    int id = *ptr + 1;
+    
+    bikinFile(id);
+    sleep(3);
+    kompresFile(id);
+    printf("Menunggu 15 detik untuk mengekstrak kembali\n");
+    sleep(5);
+    ekstrakFile(id);
+    
+    return 0;
+}
+```

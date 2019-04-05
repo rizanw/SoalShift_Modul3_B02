@@ -34,8 +34,8 @@ void *thread(void *argv){
     bikinFile(id);
     sleep(3);
     kompresFile(id);
-    printf("istirahat 15 detik\n");
-    sleep(5);
+    printf("Menunggu 15 detik untuk mengekstrak kembali\n");
+    sleep(15);
     ekstrakFile(id);
     
     return 0;
@@ -73,6 +73,6 @@ void bikinFile(int x){
     system(cmd1);
     sprintf(filename, "%s/SimpanProses%d.txt", dir, x);
     char cmd2[70];
-    sprintf(cmd2, "ps -ax | head -10 > %s", filename);
+    sprintf(cmd2, "ps -aux | head -10 > %s", filename);
     system(cmd2);
 }
