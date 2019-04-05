@@ -366,15 +366,17 @@ void *checker(void *argv){
 ```
 ## 4 Soal 4
 Buatlah sebuah program C dimana dapat menyimpan list proses yang sedang berjalan (ps -aux) maksimal 10 list proses. Dimana awalnya list proses disimpan dalam di 2 file ekstensi .txt yaitu SimpanProses1.txt di direktori /home/Document/FolderProses1 dan SimpanProses2.txt di direktori /home/Document/FolderProses2 , setelah itu masing2 file di kompres zip dengan format nama file KompresProses1.zip dan KompresProses2.zip dan file SimpanProses1.txt dan SimpanProses2.txt akan otomatis terhapus, setelah itu program akan menunggu selama 15 detik lalu program akan mengekstrak kembali file KompresProses1.zip dan KompresProses2.zip  
-####Dengan Syarat :
+
+####Dengan Syarat :  
 - Setiap list proses yang di simpan dalam masing-masing file .txt harus berjalan bersama-sama
 - Ketika mengkompres masing-masing file .txt harus berjalan bersama-sama
 - Ketika Mengekstrak file .zip juga harus secara bersama-sama
 - Ketika Telah Selesai melakukan kompress file .zip masing-masing file, maka program akan memberi pesan “Menunggu 15 detik untuk mengekstrak kembali”
 - Wajib Menggunakan Multithreading
-- Boleh menggunakan system
+- Boleh menggunakan system  
+
 ### Jawaban:
-> Check : [Full SourceCode](https://github.com/sherlyrosa/SoalShift_Modul3_B02/blob/master/SoalNo3/no3.c)
+> Check : [Full SourceCode](https://github.com/sherlyrosa/SoalShift_Modul3_B02/blob/master/SoalNo4/no4.c)
 ### Penjelasan :
 1. Buat tiga fungsi utama yaitu :
 ```c
@@ -452,3 +454,381 @@ void *thread(void *argv){
     return 0;
 }
 ```
+## 5 Soal5
+Angga, adik Jiwang akan berulang tahun yang ke sembilan pada tanggal 6 April besok. Karena lupa menabung, Jiwang tidak mempunyai uang sepeserpun untuk membelikan Angga kado. Kamu sebagai sahabat Jiwang ingin membantu Jiwang membahagiakan adiknya sehingga kamu menawarkan bantuan membuatkan permainan komputer sederhana menggunakan program C. Jiwang sangat menyukai idemu tersebut. Berikut permainan yang Jiwang minta.  
+a. Pemain memelihara seekor monster lucu dalam permainan. Pemain dapat  memberi nama pada monsternya.  
+b. Monster pemain memiliki hunger status yang berawal dengan nilai 200 (maksimalnya) dan nanti akan berkurang 5 tiap 10 detik.Ketika hunger status mencapai angka nol, pemain akan kalah. Hunger status dapat bertambah 15 apabila pemain memberi makan kepada monster, tetapi banyak makanan terbatas dan harus beli di Market.  
+c. Monster pemain memiliki hygiene status yang berawal dari 100 dan nanti berkurang 10 tiap 30 detik. Ketika hygiene status mencapai angka nol, pemain akan kalah. Hygiene status' dapat bertambah 30 hanya dengan memandikan monster. Pemain dapat memandikannya setiap 20 detik(cooldownnya 20 detik).  
+d. Monster pemain memiliki health status yang berawal dengan nilai 300. Variabel ini bertambah (regenerasi)daa 5 setiap 10 detik ketika monster dalam keadaan standby.  
+e. Monster pemain dapat memasuki keadaan battle. Dalam keadaan ini, food status(fitur b), hygiene status'(fitur c), dan ‘regenerasi’(fitur d) tidak akan berjalan. Health status dari monster dimulai dari darah saat monster pemain memasuki battle. Monster pemain akan bertarung dengan monster NPC yang memiliki darah 100. Baik monster pemain maupun NPC memiliki serangan sebesar 20. Monster pemain dengan monster musuh akan menyerang secara bergantian.
+f. Fitur shop, pemain dapat membeli makanan sepuas-puasnya selama stok di toko masih tersedia.
+- Pembeli (terintegrasi dengan game)
+	- Dapat mengecek stok makanan yang ada di toko.
+	- Jika stok ada, pembeli dapat membeli makanan.
+- Penjual (terpisah)
+	- Bisa mengecek stok makanan yang ada di toko
+	- Penjual dapat menambah stok makanan.  
+#### Spesifikasi program:
+A. Program mampu mendeteksi input berupa key press. (Program bisa berjalan tanpa perlu menekan tombol enter)  
+B. Program terdiri dari 3 scene yaitu standby, battle, dan shop.  
+C. Pada saat berada di standby scene, program selalu menampilkan health status, hunger status, hygiene status, stok makanan tersisa, dan juga status kamar mandi (“Bath is ready” jika bisa digunakan, “Bath will be ready in [bath cooldown]s” jika sedang cooldown). Selain itu program selalu menampilkan 5 menu, yaitu memberi makan, mandi, battle, shop, dan exit. Contoh :  
+Standby Mode  
+Health : [health status]  
+Hunger : [hunger status]  
+Hygiene : [hygiene status]  
+Food left : [your food stock]  
+Bath will be ready in [cooldown]s  
+1 Choices  
+2 Eat  
+3 Bath  
+4 Battle  
+5 Shop  
+6 Exit  
+D. Pada saat berada di battle scene, program selalu menampilkan health status milik pemain dan monster NPC. Selain itu, program selalu menampilkan 2 menu yaitu serang atau lari. Contoh :  
+Battle Mode  
+Monster’s Health : [health status]  
+Enemy’s Health : [enemy health status]  
+Choices  
+1 Attack  
+2 Run  
+E. Pada saat berada di shop scene versi pembeli, program selalu menampilkan food stock toko dan milik pemain. Selain itu, program selalu menampilkan 2 menu yaitu beli dan kembali ke standby scene. Contoh :  
+Shop Mode  
+Shop food stock : [shop food stock]  
+Your food stock : [your food stock]  
+Choices  
+1 Buy  
+2 Back  
+F. Pada program penjual, program selalu menampilkan food stock toko. Selain itu, program juga menampilkan 2 menu yaitu restock dan exit. Contoh :  
+Shop  
+Food stock : [shop food stock]  
+Choices  
+1 Restock  
+2 Exit  
+G. Pastikan terminal hanya mendisplay status detik ini sesuai scene terkait (hint: menggunakan system(“clear”))  
+
+### Jawaban:
+> Check : [Full SourceCode](https://github.com/sherlyrosa/SoalShift_Modul3_B02/blob/master/SoalNo5)
+### Penjelasan :
+1. Pertama buat program utamanya dulu. Kumpulkan variable utamanya.
+```c
+char petname[77];
+int hunger_stat = 200;
+int food_strg = 0;
+int *food_stock; 
+int hygiene_stat = 100; 
+int bath_time = 0;
+int health_stat = 300;
+int health_enemy = 100; 
+int pet_stat = 0; 
+int NPC_health = 100; 
+```
+2. Buat fitur utamanya dan jadikan fungsi thread.
+```c
+void *Hunger(void *argv);
+void *Hygiene(void *argv);
+void *Bathing(void *argv);
+void *Regenerating(void *argv);
+```
+3. Lalu panggil fungsi sebagai thread.
+```c
+  pthread_t tid1, tid2, tid3, tid4, tid5, tid6, tid7;
+  pthread_create(&tid1, NULL, Hunger, NULL);
+  pthread_create(&tid2, NULL, Hygiene, NULL);
+  pthread_create(&tid3, NULL, Bathing, NULL);
+  pthread_create(&tid4, NULL, Regenerating, NULL);
+  pthread_create(&tid5, NULL, menu0, NULL);
+  pthread_create(&tid6, NULL, menu1, NULL);
+  pthread_create(&tid7, NULL, menu2, NULL);
+...
+  pthread_join(tid1, NULL);
+  pthread_join(tid2, NULL);
+  pthread_join(tid3, NULL);
+  pthread_join(tid4, NULL);
+  pthread_join(tid5, NULL);
+  pthread_join(tid6, NULL);
+```
+4. beri nama monster peliharan.
+```c
+  printf("Kasih Nama: ");
+  scanf("%s", petname);
+```
+5. Buat menu utama di dalam `while(1)` di `main()`. dan gunakan `system("clear")` untuk merefresh menu tiap detik `sleep(1)`.
+```c
+  while (1) {
+    if(pet_stat == 0){
+      printf("Standby Mode\n");
+      printf("Health\t\t: %d\n", health_stat);
+      printf("Hunger\t\t: %d\n", hunger_stat);
+      printf("Hygiene\t\t: %d\n", hygiene_stat);
+      printf("Food left\t: %d\n", food_strg);
+      if(bath_time == 0)
+        printf("Bath is ready\n");
+      else
+        printf("Bath will be ready in %ds\n", bath_time);
+      printf("Choices\n");
+      printf("1. Eat\n");
+      printf("2. Bath\n");
+      printf("3. Battle\n");
+      printf("4. Shop\n");
+      printf("5. Exit\n");
+    }else if (pet_stat == 1){
+      printf("Battle Mode\n");
+      printf("Monster's Health: %d\n", health_stat);
+      printf("Enemy's Health\t: %d\n", health_enemy);
+      printf("Choices\n");
+      printf("1. Attack\n");
+      printf("2. Run\n");
+    }else if(pet_stat == 2){
+      printf("Shop Mode\n");
+      printf("Shop food stock\t: %d\n", *food_stock);
+      printf("Your food stock\t: %d\n", food_strg);
+      printf("Choices\n");
+      printf("1. Buy\n");
+      printf("2. Back\n");
+    }
+    sleep(1);
+    system("clear");
+  }
+```
+6. Lengkapi fungsi-fungsi utama yang telah dibuat:
+	- untuk memanipulasi status hungry monster:
+	```c
+	void *Hunger(void *argv){
+	  while (pet_stat != 1) {
+	    if(hunger_stat > 200) hunger_stat = 200;
+
+	    sleep(10);
+	    hunger_stat-=5;
+	    printf("hunger_stat: %d\n", hunger_stat);
+	    if(hunger_stat <= 0){
+	      printf("Lapar - Game Over\n");
+	      exit(0);
+	    }
+	  }
+	}
+	```
+	- untuk memanipulasi status hygiene monster:
+	```c
+	void *Hygiene(void *argv){
+	  while (pet_stat != 1) {
+	    sleep(10);
+	    hygiene_stat-=10;
+
+	    if(hygiene_stat <= 0){
+	      printf("Kotor - Game Over\n");
+	      exit(0);
+	    }
+	  }
+	}
+	```
+	- untuk memandikan monster:
+	```c
+	void *Bathing(void *argv){
+	  while (1) {
+	    if (bath_time != 0) {
+	      hygiene_stat+=30;
+	      while(bath_time != 0) {
+	        sleep(1);
+	        bath_time-=1;
+	      }
+	    }
+	  }
+	}
+	```
+	- untuk meregenerasi health monster:
+	```c
+	void *Regenerating(void *argv) {
+	  while (pet_stat != 1) {
+	    if(pet_stat == 0 && health_stat < 30){
+	      health_stat+=5;
+	      sleep(10);
+	    }
+	  }
+	}
+	```
+6. game ini memiliki tiga mode yaitu standby, battle, dan shop. dan dalam mode tersebut memiliki menu masing-masing, maka buat ketiga fungsi tersebut dalam bentuk thread. namun sebelum itu. karena di Linux tidak ada library untuk menerima input tanpa memencet tombol enter. maka buat fungsi tersebut sendiri:
+```c
+char getch() {
+        char buf = 0;
+        struct termios old = {0};
+        if (tcgetattr(0, &old) < 0)
+                perror("tcsetattr()");
+        old.c_lflag &= ~ICANON;
+        old.c_lflag &= ~ECHO;
+        old.c_cc[VMIN] = 1;
+        old.c_cc[VTIME] = 0;
+        if (tcsetattr(0, TCSANOW, &old) < 0)
+                perror("tcsetattr ICANON");
+        if (read(0, &buf, 1) < 0)
+                perror ("read()");
+        old.c_lflag |= ICANON;
+        old.c_lflag |= ECHO;
+        if (tcsetattr(0, TCSADRAIN, &old) < 0)
+                perror ("tcsetattr ~ICANON");
+        return (buf);
+}
+```
+7. Setelah fungsi yang dibutuhkan dibuat. Buat ketiga menu tersebut:
+	- menu ketika game standby :
+	```c
+	void *menu0(void *argv) {
+	  char in;
+	  while (1) {
+	    if(pet_stat == 0){
+	      in = getch();
+	      if(in == '1'){
+	        //Mode makan
+	        if(food_strg != 0){
+	          food_strg-=1;
+	          printf("%s is eating\n", petname);
+	          hunger_stat+= 15;
+	          sleep(1);
+	        }else{
+	          printf("food needed. restock please\n");
+	          sleep(1);
+	        }
+	      }else if(in == '2'){
+	        //Mode mandi
+	        printf("mandi dulu\n");
+	        if(bath_time == 0) bath_time = 20;
+	      }else if(in == '3'){
+	        //Mode tarung
+	        printf("3\n");
+	        pet_stat = 1;
+	      }else if(in == '4'){
+	        //Mode pasar
+	        pet_stat = 2;
+	      }else if(in == '5'){
+	        //keluar game
+	        printf("exit . . .\n");
+	        exit(0);
+	      }
+	    }
+	  }
+	}
+	```
+	- menu ketika game battle:
+	```c
+	void *menu1(void *argv){
+	  //menu tarung
+	  char in;
+	  while (1) {
+	    if(pet_stat == 1){
+	      in = getch();
+	      if(in == '1'){
+	        printf("%s is attacking\n", petname);
+	        sleep(1);
+	        health_enemy -= 20;
+	        printf("Enemy is attacking\n");
+	        sleep(1);
+	        health_stat -= 20;
+	        if(health_enemy == 0){
+	          printf("%s wins\n", petname);
+	          sleep(2);
+	          pet_stat = 0;
+	        }
+	      }else if(in == '2'){
+	        //Mode kabur
+	        printf("%s is running\n", petname);
+	        health_enemy = 100;
+	        pet_stat = 0;
+	      }
+	    }
+	  }
+	}
+	```
+	- menu ketika shop:
+	```c
+	void *menu2(void *argv){
+	  //menu pasar
+	  char in;
+	  while (1) {
+	    if(pet_stat == 2){
+	      in = getch();
+	      if(in == '1'){
+	        //buy
+	        if (*food_stock > 0) {
+	          *food_stock-=1;
+	          food_strg+=1;
+	        }
+	      }else if(in == '2'){
+	        //back
+	        pet_stat = 0;
+	      }
+	    }
+	  }
+	}
+	```
+8. Game selesai namun tidak dapat berfungsi sepenuhnya, karena belum shop untuk membeli makanan. maka buat file baru untuk membuat shop. dalam kasus ini kita akan menggunakan shared memory.
+```c
+int *food_stock;
+
+int main(){
+  key_t key = 1234;
+
+  int shmid = shmget(key, sizeof(int), IPC_CREAT | 0666);
+  food_stock = shmat(shmid, NULL, 0);
+
+  *food_stock = 0;
+
+  while (1) {
+    printf("Shop\n");
+    printf("Food stock : %d\n", *food_stock);
+    printf("Choices\n");
+    printf("1. Restock\n");
+    printf("2. Exit\n");
+    sleep(1);
+    system("clear");
+  }
+}
+9. Tambahkan fungsi menu untuk memasukkan command. namun sebelum itu tambahkan fungsi untuk melakukan input tanpa press Enter.
+```c
+char getch() {
+  char buf = 0;
+  struct termios old = {0};
+  if (tcgetattr(0, &old) < 0)
+    perror("tcsetattr()");
+  old.c_lflag &= ~ICANON;
+  old.c_lflag &= ~ECHO;
+  old.c_cc[VMIN] = 1;
+  old.c_cc[VTIME] = 0;
+  if (tcsetattr(0, TCSANOW, &old) < 0)
+    perror("tcsetattr ICANON");
+  if (read(0, &buf, 1) < 0)
+    perror ("read()");
+  old.c_lflag |= ICANON;
+  old.c_lflag |= ECHO;
+  if (tcsetattr(0, TCSADRAIN, &old) < 0)
+    perror ("tcsetattr ~ICANON");
+  return (buf);
+}
+```
+10. Setelah itu buat fungsi sekaligus thread nya.
+```c
+void *menu(void * argv){
+  int in;
+  while (1) {
+    in = getch();
+    if (in == '1') {
+      printf("tambah 1\n");
+      *food_stock+=1;
+    }else if(in == '2'){
+      exit(0);
+    }
+  }
+}
+```
+dan di dalam fungsi `main()`:
+```c
+...
+  pthread_t tid;
+  pthread_create(&tid, NULL, menu, NULL);
+...
+```
+11. Setelah program shop bekerja, panggil juga fungsi untuk mengambil data dari memori yang sama oleh program shop. Tambahkan di `main()`:
+```c
+  key_t key = 1234;
+  int shmid = shmget(key, sizeof(int), IPC_CREAT | 0666);
+  food_stock = shmat(shmid, NULL, 0);
+```
+12. Game berjalan dengan lancar. enjoy.
