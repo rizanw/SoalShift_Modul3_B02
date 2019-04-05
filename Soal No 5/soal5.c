@@ -3,7 +3,9 @@
 #include <unistd.h>
 #include <termios.h>
 #include <pthread.h>
-
+#include <string.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 
 char petname[77];
 int hunger_stat = 200;
@@ -11,6 +13,7 @@ int hunger_stat = 200;
 //pemain bisa memberi makan
 int food_strg = 0;
 //makanan dibeli di market
+int *food_stock; // jumlah makanan di market
 int hygiene_stat = 100; //berkurang 10 tiap 30detik
 //bertambah 30 jika dimandikan, cooldown 20detik
 int bath_time = 0;
@@ -33,8 +36,8 @@ int main(int argc, char const *argv[]) {
   printf("Kasih Nama: ");
   scanf("%s", petname);
 
+  //thread creation
   pthread_t tid1, tid2, tid3, tid4, tid5, tid6, tid7;
-
   pthread_create(&tid1, NULL, Hunger, NULL);
   pthread_create(&tid2, NULL, Hygiene, NULL);
   pthread_create(&tid3, NULL, Bathing, NULL);
@@ -43,6 +46,16 @@ int main(int argc, char const *argv[]) {
   pthread_create(&tid6, NULL, menu1, NULL);
   pthread_create(&tid7, NULL, menu2, NULL);
 
+  //sharedmem creation
+  key_t key = 1234;
+  int shmid = shmget(key, sizeof(int), IPC_CREAT | 0666);
+  food_stock = shmat(shmid, NULL, 0);
+  //
+  // printf("Program 1: %d\n", *value);
+  // shmdt(value);
+  // shmctl(shmid, IPC_RMID, NULL);
+
+  //program running
   while (1) {
     if(pet_stat == 0){
       printf("Standby Mode\n");
@@ -69,8 +82,8 @@ int main(int argc, char const *argv[]) {
       printf("2. Run\n");
     }else if(pet_stat == 2){
       printf("Shop Mode\n");
-      printf("Shop food stock\t: \n");
-      printf("Your food stock\t: \n");
+      printf("Shop food stock\t: %d\n", *food_stock);
+      printf("Your food stock\t: %d\n", food_strg);
       printf("Choices\n");
       printf("1. Buy\n");
       printf("2. Back\n");
@@ -157,7 +170,7 @@ void *menu0(void *argv) {
         if(food_strg != 0){
           food_strg-=1;
           printf("%s is eating\n", petname);
-          hunger_stat-= 15;
+          hunger_stat+= 15;
           sleep(1);
         }else{
           printf("food needed. restock please\n");
@@ -219,6 +232,10 @@ void *menu2(void *argv){
       in = getch();
       if(in == '1'){
         //buy
+        if (*food_stock > 0) {
+          *food_stock-=1;
+          food_strg+=1;
+        }
       }else if(in == '2'){
         //back
         pet_stat = 0;
