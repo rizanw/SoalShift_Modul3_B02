@@ -45,7 +45,7 @@ for(k=1;k<argc;k++){
     }
   }
 ```
-## 1. soal1
+## 2. soal2
 Pada suatu hari ada orang yang ingin berjualan 1 jenis barang secara private, dia memintamu membuat program C dengan spesifikasi sebagai berikut:
 a. Terdapat 2 server: server penjual dan server pembeli
 b. 1 server hanya bisa terkoneksi dengan 1 client
